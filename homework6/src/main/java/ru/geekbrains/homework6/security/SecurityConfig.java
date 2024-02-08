@@ -22,11 +22,14 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET).hasAnyRole("USER", "ADMIN")
-                                )
+
+                                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT,"/api/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers("/login/**").permitAll()
+                                .anyRequest().authenticated()
+                )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

@@ -19,7 +19,7 @@ public class UserDetailServiceConfig {
 
         manager.createUser(User.withUsername("admin")
                 .password(bCryptPasswordEncoder.encode("adminPass"))
-                .roles("ADMIN", "USER")
+                .roles("ADMIN")
                 .build());
 
         return manager;
