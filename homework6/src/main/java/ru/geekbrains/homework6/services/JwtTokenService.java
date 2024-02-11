@@ -10,22 +10,26 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import io.jsonwebtoken.security.Keys;
 
+import javax.crypto.SecretKey;
 import java.util.*;
+
+import static io.jsonwebtoken.security.Keys.secretKeyFor;
 
 @Component
 public class JwtTokenService {
 
     private final long JWT_TOKEN_VALIDITY = 10000;
 
-    private final String SECRET = "secret";
+    private final SecretKey SECRET = secretKeyFor(SignatureAlgorithm.HS512);
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         for (GrantedAuthority auth : userDetails.getAuthorities()){
             claims.put("role", auth.getAuthority());
         }
-
+        System.out.println("Токен генерируется");
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(String.valueOf(userDetails.getUsername()))
