@@ -37,6 +37,6 @@ public class AuthController {
             String token = jwtTokenService.generateToken(userDetails);
             return new ResponseEntity<>("Bearer " + token, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }
